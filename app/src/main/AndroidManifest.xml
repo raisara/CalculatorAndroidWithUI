@@ -11,9 +11,9 @@
         android:theme="@style/Theme.CalculatorAndroid">
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize"
             android:exported="true"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

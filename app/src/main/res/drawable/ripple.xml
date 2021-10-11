@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="?android:colorControlHighlight">
+    <item android:id="@+id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="#00BCD4" />
+            <corners android:radius="999dp"/>
+        </shape>
+    </item>
+    <item android:id="@+id/background">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="90"
+                android:endColor="@color/black"
+                android:startColor="@color/white"
+                android:type="linear"/>
+            <corners android:radius="999dp"/>
+        </shape>
+    </item>
+</ripple>
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<ripple xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:color="?android:colorControlHighlight">-->
+<!--    <item>-->
+<!--        <shape android:shape="oval">-->
+<!--            <solid android:color="#00BCD4" />-->
+<!--            <corners android:radius="999dp"/>-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--</ripple>-->
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<ripple xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:color="?android:colorControlHighlight">-->
+<!--    <item android:drawable="@drawable/circular_button">-->
+<!--        <shape android:shape="oval">-->
+<!--            <solid android:color="#d1c4e9" />-->
+
+<!--        </shape>-->
+<!--    </item>-->
+<!--</ripple>-->
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<ripple-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:color="?android:colorControlHighlight"-->
+<!--    android:background="@drawable/circular_button">-->
+
+<!--    <item android:drawable="@drawable/circular_button" >-->
+<!--        <shape android:shape="oval">-->
+<!--        <solid android:color="@color/white" />-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--</ripple>-->
+
+    <!--    <ripple xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:color="#FFEB3B">-->
+<!--        <item-->
+<!--            android:background="@drawable/circular_button" />-->
+<!--    </ripple>-->
+
