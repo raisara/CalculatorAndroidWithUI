@@ -169,7 +169,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/button_margin"
-        android:text="*"
+        android:text="x"
         app:layout_constraintBottom_toTopOf="@id/button_sub"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"

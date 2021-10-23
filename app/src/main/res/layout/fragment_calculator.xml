@@ -185,7 +185,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/button_margin"
-        android:text="*"
+        android:text="x"
         android:textColor="@color/white"
         android:background="@drawable/ripple"
         app:layout_constraintBottom_toTopOf="@id/button_sub"

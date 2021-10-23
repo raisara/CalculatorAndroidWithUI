@@ -171,29 +171,25 @@ class CalculatorFragment : Fragment(), View.OnClickListener {
                 addSymbol('/')
             }
             R.id.button_point -> {
-                if(viewCalculation.getText().last()=='+' || viewCalculation.getText().last()=='-' ||
-                    viewCalculation.getText().last()=='/' || viewCalculation.getText().last()=='x'){
+                if (viewCalculation.getText().last() == '+' || viewCalculation.getText()
+                        .last() == '-' ||
+                    viewCalculation.getText().last() == '/' || viewCalculation.getText()
+                        .last() == 'x'
+                ) {
                     viewCalculation.append("0.")
-                }else{
+                } else {
                     viewCalculation.append(".")
                 }
             }
             R.id.button_eq -> {
                 val result = calculate(viewCalculation.getText())
                 viewCalculation.setText(result)
-               // anew = true;
-                //empty
-
-//                val a = Toast.makeText(context, viewCalculation.getText(), Toast.LENGTH_SHORT).show();
-                //     viewCalculation.setText(null)
             }
             R.id.button_clear -> {
                 viewCalculation.setText(null)
                 anew = true;
             }
         }
-
-
     }
 
     private fun addDigit(digit: String) {
@@ -204,93 +200,89 @@ class CalculatorFragment : Fragment(), View.OnClickListener {
         viewCalculation.append(digit)
     }
 
-    private fun addSymbol(symbol: Char) {
 
+    private fun addSymbol(symbol: Char) {
         if (anew && symbol != 'x' && symbol != '/') {
             viewCalculation.append(symbol.toString())
             anew = false;
-        } else if (anew && (symbol == 'x' || symbol == '/')) {
-            //  viewCalculation.append(symbol.toString())
-        } else {
+        } else if (!anew) {
             val calculationText = viewCalculation.getText().toString()
             val lastChar = calculationText.last()
             if (calculationText.length > 1) {
-                if (lastChar == '+' || lastChar == '/' || lastChar == 'x' || lastChar == '-') {
-                    val replaced: String =
-                        viewCalculation.getText().toString().replace(lastChar, symbol)
-                    viewCalculation.text = replaced
-                } else{
-                    viewCalculation.append(symbol.toString())
+                if (lastChar.isSymbol()) {
+                    viewCalculation.text =
+                        viewCalculation.text.substring(0, viewCalculation.text.length - 1)
                 }
-            }else if(symbol == '+' && lastChar=='-'|| symbol == '-' && lastChar=='+') {
-                val replaced: String =
-                    viewCalculation.getText().toString().replace(lastChar, symbol)
-                viewCalculation.text = replaced
-            }else if(lastChar=='-'|| lastChar=='+'){
-            }
-            else{
+                viewCalculation.append(symbol.toString())
+            } else if (symbol == '+' && lastChar == '-' || symbol == '-' && lastChar == '+') {
+                viewCalculation.text =
+                    viewCalculation.text.substring(0, viewCalculation.text.length - 1)
+                viewCalculation.append(symbol.toString())
+            } else if (lastChar != '-' && lastChar != '+') {
                 viewCalculation.append(symbol.toString())
             }
         }
     }
 
-
-
-
-private fun calculate(text: CharSequence?): String {
-
-    val listOfDigitsAndOperators = makeListOfDigitsAndOperators(text)
-    if (listOfDigitsAndOperators.isEmpty()) return ""
-
-    val multOrDivResult = timesDivisionCalculate(listOfDigitsAndOperators)
-    if (multOrDivResult.isEmpty()) return ""
-    else if (multOrDivResult.first() == "NaN") return "NaN"
-
-    val result = addOrSubCalculation(multOrDivResult)
-    lastEq = true;
-    return result
-}
-
-private fun timesDivisionCalculate(listOfDigitsAndOperators: MutableList<Any>): MutableList<Any> {
-    var list = listOfDigitsAndOperators
-    while (list.contains('x') || list.contains('/')) {
-
-        list = multOrDivCalculation(list)
+    private fun Char.isSymbol(): Boolean {
+        return this == '+' || this == '-' || this == '/' || this == 'x'
     }
-    return list
 
-}
 
-private fun makeListOfDigitsAndOperators(text: CharSequence?): MutableList<Any> {
-    val list = mutableListOf<Any>() //val?
+    private fun calculate(text: CharSequence?): String {
 
-    var digit = ""
+        val listOfDigitsAndOperators = makeListOfDigitsAndOperators(text)
+        if (listOfDigitsAndOperators.isEmpty()) return ""
 
-    if (text != null) {
-        if (text[0] == '-' || text[0] == '+') {
-            digit += text[0]
-         //else {
+        val multOrDivResult = timesDivisionCalculate(listOfDigitsAndOperators)
+        if (multOrDivResult.isEmpty()) return ""
+        else if (multOrDivResult.first() == "NaN") return "NaN"
 
-            for (i in 1..text.length-1) {
-                if (text[i].isDigit() || text[i] == '.') {
-                    digit += text[i]
-                } else {
-                    list.add(digit.toFloat())
-                    digit = ""
-                    list.add(text[i])
-                }
-            }
-        }else{
-            for (i in 0..text.length-1) {
-                if (text[i].isDigit() || text[i] == '.') {
-                    digit += text[i]
-                } else {
-                    list.add(digit.toFloat())
-                    digit = ""
-                    list.add(text[i])
-                }
-            }
+        val result = addOrSubCalculation(multOrDivResult)
+        lastEq = true;
+        return result
+    }
+
+    private fun timesDivisionCalculate(listOfDigitsAndOperators: MutableList<Any>): MutableList<Any> {
+        var list = listOfDigitsAndOperators
+        while (list.contains('x') || list.contains('/')) {
+
+            list = multOrDivCalculation(list)
         }
+        return list
+
+    }
+
+    private fun makeListOfDigitsAndOperators(text: CharSequence?): MutableList<Any> {
+        val list = mutableListOf<Any>() //val?
+
+        var digit = ""
+
+        if (text != null) {
+            if (text[0] == '-' || text[0] == '+') {
+                digit += text[0]
+                //else {
+
+                for (i in 1..text.length - 1) {
+                    if (text[i].isDigit() || text[i] == '.') {
+                        digit += text[i]
+                    } else {
+                        list.add(digit.toFloat())
+                        digit = ""
+                        list.add(text[i])
+                    }
+                }
+            } else {
+                for (i in 0..text.length - 1) {
+                    if (text[i].isDigit() || text[i] == '.') {
+                        digit += text[i]
+                    } else {
+                        list.add(digit.toFloat())
+                        digit = ""
+                        list.add(text[i])
+                    }
+                }
+            }
 //        for (char in 1..text.length) {
 //            if (char[char].isDigit() || char == '.') {
 //                digit += char
@@ -303,69 +295,69 @@ private fun makeListOfDigitsAndOperators(text: CharSequence?): MutableList<Any> 
             if (digit != "") {
                 list.add(digit.toFloat())
             }
-       // }
+            // }
+        }
+        return list
     }
-    return list
-}
 
-private fun addOrSubCalculation(multOrDivResult: MutableList<Any>): String {
-    var result = multOrDivResult[0] as Float
+    private fun addOrSubCalculation(multOrDivResult: MutableList<Any>): String {
+        var result = multOrDivResult[0] as Float
 
-    for (i in multOrDivResult.indices) {
-        if (multOrDivResult[i] is Char && i != multOrDivResult.lastIndex) {
-            val operator = multOrDivResult[i]
-            val nextDigit = multOrDivResult[i + 1] as Float
-            when (operator) {
-                '+' -> {
-                    result += nextDigit
-                }
-                '-' -> {
-                    result -= nextDigit
+        for (i in multOrDivResult.indices) {
+            if (multOrDivResult[i] is Char && i != multOrDivResult.lastIndex) {
+                val operator = multOrDivResult[i]
+                val nextDigit = multOrDivResult[i + 1] as Float
+                when (operator) {
+                    '+' -> {
+                        result += nextDigit
+                    }
+                    '-' -> {
+                        result -= nextDigit
+                    }
                 }
             }
         }
+        return result.toString()
     }
-    return result.toString()
-}
 
 
-private fun multOrDivCalculation(list: MutableList<Any>): MutableList<Any> {
-    val newList = mutableListOf<Any>()
-    var index: Int = list.size
-    //while (list.contains('x') || list.contains('/')) {
-    //var index = newList.size
-    for (i in list.indices) {
-        if (list[i] is Char && i != list.lastIndex && i < index) {
-            val operator = list[i]
-            val prevDigit = list[i - 1] as Float
-            val nextDigit = list[i + 1] as Float
-            if (nextDigit == 0.toFloat()) {
-                newList.add("NaN")
-                return newList
+    private fun multOrDivCalculation(list: MutableList<Any>): MutableList<Any> {
+        val newList = mutableListOf<Any>()
+        var index: Int = list.size
+        //while (list.contains('x') || list.contains('/')) {
+        //var index = newList.size
+        for (i in list.indices) {
+            if (list[i] is Char && i != list.lastIndex && i < index) {
+                val operator = list[i]
+                val prevDigit = list[i - 1] as Float
+                val nextDigit = list[i + 1] as Float
+                if (nextDigit == 0.toFloat()) {
+                    newList.add("NaN")
+                    return newList
+                }
+                when (operator) {
+                    'x' -> {
+                        newList.add(prevDigit * nextDigit)
+                        index = i + 1
+                    }
+                    '/' -> {
+                        newList.add(prevDigit / nextDigit)
+                        index = i + 1
+                    }
+                    else -> {
+                        newList.add(prevDigit)
+                        newList.add(operator)
+                    }
+                }
             }
-            when (operator) {
-                'x' -> {
-                    newList.add(prevDigit * nextDigit)
-                    index = i + 1
-                }
-                '/' -> {
-                    newList.add(prevDigit / nextDigit)
-                    index = i + 1
-                }
-                else -> {
-                    newList.add(prevDigit)
-                    newList.add(operator)
-                }
+            if (i > index) {
+                newList.add(list[i])
             }
         }
-        if (i > index) {
-            newList.add(list[i])
-        }
+        //}
+        return newList
+        // viewCalculation.append(result)
     }
-    //}
-    return newList
-    // viewCalculation.append(result)
-}
 
 
 }
